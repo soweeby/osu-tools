@@ -92,7 +92,9 @@ namespace PerformanceCalculator.Profile
                     Beatmap = working.BeatmapInfo,
                     LocalPP = performanceCalculator.Calculate(),
                     LivePP = play.pp,
-                    Mods = mods.Length > 0 ? mods.Select(m => m.Acronym).Aggregate((c, n) => $"{c}, {n}") : "None"
+                    Mods = mods.Length > 0 ? mods.Select(m => m.Acronym).Aggregate((c, n) => $"{c}, {n}") : "None",
+                    Misses = (int)play.countmiss,
+                    Accuracy = score.ScoreInfo.Accuracy,
                 };
 
                 displayPlays.Add(thisPlay);
@@ -119,12 +121,14 @@ namespace PerformanceCalculator.Profile
                 new Span($"Local PP: {totalLocalPP:F1} ({totalDiffPP:+0.0;-0.0;-})"), "\n",
                 new Grid
                 {
-                    Columns = { GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto },
+                    Columns = { GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto, GridLength.Auto },
                     Children =
                     {
                         new Cell("beatmap"),
                         new Cell("live pp"),
                         new Cell("local pp"),
+                        new Cell("Accuracy"),
+                        new Cell("misses lol"),
                         new Cell("pp change"),
                         new Cell("position change"),
                         localOrdered.Select(item => new[]
@@ -132,6 +136,8 @@ namespace PerformanceCalculator.Profile
                             new Cell($"{item.Beatmap.OnlineBeatmapID} - {item.Beatmap}"),
                             new Cell($"{item.LivePP:F1}") { Align = Align.Right },
                             new Cell($"{item.LocalPP:F1}") { Align = Align.Right },
+                            new Cell($"{(item.Accuracy * 100):F}") {Align = Align.Right},
+                            new Cell($"{item.Misses}") {Align = Align.Right},
                             new Cell($"{item.LocalPP - item.LivePP:F1}") { Align = Align.Right },
                             new Cell($"{liveOrdered.IndexOf(item) - localOrdered.IndexOf(item):+0;-0;-}") { Align = Align.Center },
                         })

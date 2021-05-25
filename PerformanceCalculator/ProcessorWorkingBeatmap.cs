@@ -48,6 +48,6 @@ namespace PerformanceCalculator
         protected override IBeatmap GetBeatmap() => beatmap;
         protected override Texture GetBackground() => null;
         protected override Track GetBeatmapTrack() => null;
-        public override Stream GetStream(string storagePath) => null;
+        //public override Stream GetStream(string storagePath) => null;
     }
 }
